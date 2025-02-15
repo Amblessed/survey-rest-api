@@ -67,7 +67,21 @@ public class SurveyController {
     public ResponseEntity<Object> addNewSurveyQuestion(@PathVariable String surveyId, @RequestBody Question question) {
        String questionId = surveyService.createNewSurveyQuestion(surveyId, question);
 
+       //This allows you to return the URI of the created resource in the response header
        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{questionId}").buildAndExpand(questionId).toUri();
        return ResponseEntity.created(location).build();
+    }
+
+
+    @DeleteMapping("/surveys/{surveyId}/questions/{questionId}")
+    public ResponseEntity<Object> deleteSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId) {
+        surveyService.deleteSurveyQuestion(surveyId, questionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/surveys/{surveyId}/questions/{questionId}")
+    public ResponseEntity<Object> updateSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId, @RequestBody Question question) {
+        surveyService.updateSurveyQuestion(surveyId, questionId, question);
+        return ResponseEntity.noContent().build();
     }
 }
